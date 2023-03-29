@@ -1,20 +1,152 @@
-﻿// 01.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+﻿// Домашнее задание к занятию «Тестирование»
+// Задача 1. Проверка базовых функций двусвзяного списка
 
 #include <iostream>
+#include "catch2/catch_test_macros.hpp"
+#include "catch2/catch_session.hpp"
 
-int main()
+
+
+
+
+struct ListNode
 {
-    std::cout << "Hello World!\n";
+public:
+    ListNode(int value, ListNode* prev = nullptr, ListNode* next = nullptr)
+        : value(value), prev(prev), next(next)
+    {
+        if (prev != nullptr) prev->next = this;
+        if (next != nullptr) next->prev = this;
+    }
+
+public:
+    int value;
+    ListNode* prev;
+    ListNode* next;
+};
+
+class List
+{
+public:
+    List()
+        : m_head(new ListNode(static_cast<int>(0))), m_size(0),
+        m_tail(new ListNode(0, m_head))
+    {
+    }
+
+    virtual ~List()
+    {
+        Clear();
+        delete m_head;
+        delete m_tail;
+    }
+
+    //Проверка размер списка равен ли нулю или нет
+    bool Empty() { return m_size == 0; }
+
+    //Показать размер списка
+    unsigned long Size() { return m_size; }
+
+    void PushFront(int value)
+    {
+        new ListNode(value, m_head, m_head->next);
+        ++m_size;
+    }
+
+    void PushBack(int value)
+    {
+        new ListNode(value, m_tail->prev, m_tail);
+        ++m_size;
+    }
+
+    int PopFront()
+    {
+        if (Empty()) throw std::runtime_error("list is empty");
+        auto node = extractPrev(m_head->next->next);
+        int ret = node->value;
+        delete node;
+        return ret;
+    }
+
+    int PopBack()
+    {
+        if (Empty()) throw std::runtime_error("list is empty");
+        auto node = extractPrev(m_tail);
+        int ret = node->value;
+        delete node;
+        return ret;
+    }
+
+    void Clear()
+    {
+        auto current = m_head->next;
+        while (current != m_tail)
+        {
+            current = current->next;
+            delete extractPrev(current);
+        }
+    }
+
+private:
+    ListNode* extractPrev(ListNode* node)
+    {
+        auto target = node->prev;
+        target->prev->next = target->next;
+        target->next->prev = target->prev;
+        --m_size;
+        return target;
+    }
+
+private:
+    ListNode* m_head;
+    ListNode* m_tail;
+    unsigned long m_size;
+};
+
+
+TEST_CASE("TESTTT", "[Tsadew]"
+{
+    List L1;
+
+    CHECK(L1.Empty() == 0)
 }
 
-// Запуск программы: CTRL+F5 или меню "Отладка" > "Запуск без отладки"
-// Отладка программы: F5 или меню "Отладка" > "Запустить отладку"
 
-// Советы по началу работы 
-//   1. В окне обозревателя решений можно добавлять файлы и управлять ими.
-//   2. В окне Team Explorer можно подключиться к системе управления версиями.
-//   3. В окне "Выходные данные" можно просматривать выходные данные сборки и другие сообщения.
-//   4. В окне "Список ошибок" можно просматривать ошибки.
-//   5. Последовательно выберите пункты меню "Проект" > "Добавить новый элемент", чтобы создать файлы кода, или "Проект" > "Добавить существующий элемент", чтобы добавить в проект существующие файлы кода.
-//   6. Чтобы снова открыть этот проект позже, выберите пункты меню "Файл" > "Открыть" > "Проект" и выберите SLN-файл.
+
+int main(int argc, char* argv[])
+{
+
+
+    //List L1;
+
+
+    //std::cout << "Empty() " << L1.Empty() << std::endl;
+
+    //std::cout << "L1.Size() " << L1.Size() << std::endl;
+    //
+    //L1.PushBack(55);
+    //L1.PushBack(56);
+    //L1.PushBack(57);
+    //
+    //std::cout << "L1.Size() " << L1.Size() << std::endl;
+
+    //L1.PushFront(58);
+
+    //std::cout << "L1.Size() " << L1.Size() << std::endl;
+    //std::cout << "Empty() " << L1.Empty() << std::endl;
+    //std::cout << "L1.PopFront() 58 - " << L1.PopFront() << std::endl;
+
+    //std::cout << "L1.Size() " << L1.Size() << std::endl;
+
+    ////L1.Clear();
+
+    //std::cout << "L1.PopFront() 55 - " << L1.PopFront() << std::endl;
+    //std::cout << "L1.PopFront() 56 - " << L1.PopFront() << std::endl;
+    //std::cout << "L1.PopFront() 57 - " << L1.PopFront() << std::endl;
+    //std::cout << "L1.PopFront() ?? - " << L1.PopFront() << std::endl;
+
+
+    std::cout << "\n\nHello World!\n\n";
+
+    return Catch::Session().run(argc, argv);
+}
