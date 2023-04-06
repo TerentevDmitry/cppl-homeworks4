@@ -104,18 +104,93 @@ private:
 };
 
 
-TEST_CASE("TESTTT", "[Tsadew]")
+TEST_CASE("TEST_LIST", "[TEST_LIST]")
 {
     List L1;
 
-    CHECK(L1.Empty() == 1);
+    SECTION("Проверка пустой список или нет CHECK_FALSE Empty()")
+    {
+        INFO("Проверка пустой список или нет CHECK_FALSE Empty()");
+        
+        //Пустой
+        CHECK_FALSE(!L1.Empty());
+
+        L1.PushBack(55);
+        
+        //Не пустой
+        CHECK_FALSE(L1.Empty());
+        
+        L1.PopBack();
+        
+        //Пустой
+        CHECK_FALSE(!L1.Empty());
+
+    };
+
+    SECTION("Проверка размера списка CHECK Size()")
+    {
+        INFO("Проверка размера списка");
+
+        //Пустой
+        CHECK(L1.Size() == 0);
+
+        L1.PushBack(55);
+
+        //Не пустой
+        CHECK(L1.Size() == 1);
+
+        L1.PushBack(55);
+        L1.PushBack(56);
+        L1.PushBack(57);
+
+        //Не пустой
+        CHECK(L1.Size() == 4);
+
+        L1.PopBack();
+
+        //Не пустой
+        CHECK(L1.Size() == 3);
+
+        L1.PopBack();
+        L1.PopBack();
+        L1.PopBack();
+
+        //Пустой
+        CHECK(L1.Size() == 0);
+    };
+
+    SECTION("Проверка очистки списка CHECK Clear()")
+    {
+        INFO("Проверка очистки списка CHECK Clear()");
+
+        L1.Clear();
+        
+        //Пустой
+        CHECK(L1.Size() == 0);
+
+        L1.PushBack(57);
+        //Не Пустой
+        CHECK(L1.Size() == 1);
+
+        L1.PopBack();
+
+        //Пустой
+        CHECK(L1.Size() == 0);
+
+
+    };
+
+
+
+
+
 };
 
 
 
 int main(int argc, char* argv[])
 {
-
+    setlocale(LC_ALL, "RU");
 
     //List L1;
 
