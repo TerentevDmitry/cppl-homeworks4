@@ -26,8 +26,5 @@ add_executable(cppl_homeworks_04_01 ${SOURCES_EXE} ${HEADERS_LIB})
 #Линковка программы с библиотекой 
 #target_link_libraries(Cursovik_basicProgExe Cursovik_basicProgLib)
 
-#Подключение catch2
-find_package(Catch2 3 REQUIRED)
-
 #Линковка программы с библиотекой catch2 
 target_link_libraries(cppl_homeworks_04_01 PRIVATE Catch2::Catch2WithMain)
