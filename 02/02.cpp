@@ -137,11 +137,21 @@ TEST_CASE("TEST_LIST", "[LIST]")
 
         CHECK(L1.Size() == 0);
 
-   
+        
+        
+        //Исключение
+        
+       
     };
+
+    
+
+
+
 
 
 };
+
 
 
 int main(int argc, char* argv[])
